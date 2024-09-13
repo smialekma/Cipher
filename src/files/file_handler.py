@@ -6,8 +6,8 @@ from text import Text
 
 class FileHandler:
 
-    def read_from_file(self, file_path):
-        """This function creates text object from a json file"""
+    def read_from_file(self, file_path: str) -> Text:
+        """This function creates dataclass object from a json file"""
         try:
             with open(file_path, "r") as json_file:
                 json_dict = json.load(json_file)
@@ -15,8 +15,8 @@ class FileHandler:
         except FileNotFoundError:
             print("File not found. Please check the path and ensure the file exists.")
 
-    def save_to_file(self, file_path, text_object):
-        """This function saves text object in a json file"""
+    def save_to_file(self, file_path: str, text_object: Text) -> None:
+        """This function saves dataclass object into a json file"""
         text_dict = asdict(text_object)
 
         if os.path.exists(file_path):
