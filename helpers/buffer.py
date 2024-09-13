@@ -1,2 +1,3 @@
+from text import Text
 class Buffer:
-    buffer = []
+    buffer: list[Text] = []
