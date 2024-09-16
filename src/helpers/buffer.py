@@ -1,4 +1,4 @@
-from text import Text
+from src.decoders.text import Text
 
 
 class Buffer:

@@ -1,7 +1,7 @@
 import json
 import os
 from dataclasses import asdict
-from text import Text
+from src.decoders.text import Text
 
 
 class FileHandler:
@@ -20,9 +20,9 @@ class FileHandler:
         text_dict = asdict(text_object)
 
         if os.path.exists(file_path):
-            with open(file_path, 'a') as json_file:
+            with open(file_path, "a") as json_file:
                 json.dump(text_dict, json_file)
 
         else:
-            with open(file_path, 'w') as json_file:
+            with open(file_path, "w") as json_file:
                 json.dump(text_dict, json_file)
