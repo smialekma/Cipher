@@ -1,4 +1,4 @@
-from rot_decoder import RotDecoder
+from rot_decoder import Rot13Decoder, Rot47Decoder
 from abc import ABC, abstractmethod
 
 
@@ -11,13 +11,13 @@ class DecoderFactory(ABC):
 
 class Rot13Factory(DecoderFactory):
 
-    def create_decoder(self) -> RotDecoder:
+    def create_decoder(self) -> Rot13Decoder:
         """This function creates Rot13 Decoder"""
-        return RotDecoder(13)
+        return Rot13Decoder()
 
 
 class Rot47Factory(DecoderFactory):
 
-    def create_decoder(self) -> RotDecoder:
+    def create_decoder(self) -> Rot47Decoder:
         """This function creates Rot47 Decoder"""
-        return RotDecoder(47)
+        return Rot47Decoder()
