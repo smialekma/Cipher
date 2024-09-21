@@ -1,6 +1,6 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from string import ascii_lowercase as lowercase, ascii_uppercase as uppercase
+import codecs
 
 
 class Decoder(ABC):
@@ -14,18 +14,39 @@ class Decoder(ABC):
         pass
 
 
-class RotDecoder(Decoder):
-    def __init__(self, shift: int):
-        self.shift = shift
+class Rot13Decoder(Decoder):
 
     def encode(self, text: str) -> str:
         """This function encodes [plain -> cipher] a text with a Caesar cipher."""
-        shift = self.shift
-        lookup = str.maketrans(lowercase + uppercase, lowercase[shift:] + lowercase[:shift] + uppercase[shift:] + uppercase[:shift])
-        return text.translate(lookup)
+        return codecs.encode(text, "rot_13")
 
-    def decode(self,text: str) -> str:
+    def decode(self, text: str) -> str:
         """This function decodes [cipher -> plain] a text with a Caesar cipher."""
-        shift = -self.shift
-        lookup = str.maketrans(lowercase + uppercase,lowercase[shift:] + lowercase[:shift] + uppercase[shift:] + uppercase[:shift])
-        return text.translate(lookup)
+        return self.encode(text)
+
+
+class Rot47Decoder(Decoder):
+
+    def encode(self, text: str) -> str:
+        """This function encodes [plain -> cipher] a text with a Caesar cipher."""
+        encoded_message = ""
+        for char in text:
+            char_code = ord(char)
+            if 33 <= char_code <= 126:
+                char_code -= 47
+                if char_code < 33:
+                    char_code += 94
+            encoded_message += chr(char_code)
+        return encoded_message
+
+    def decode(self, text: str) -> str:
+        """This function decodes [cipher -> plain] a text with a Caesar cipher."""
+        decoded_message = ""
+        for char in text:
+            char_code = ord(char)
+            if 33 <= char_code <= 126:
+                char_code += 47
+                if char_code > 126:
+                    char_code -= 94
+            decoded_message += chr(char_code)
+        return decoded_message
