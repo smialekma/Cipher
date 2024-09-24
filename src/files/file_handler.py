@@ -23,7 +23,9 @@ class FileHandler:
             dict_to_save = existing_dict
 
         with open(file_path, "w") as json_file:
-            json.dump(dict_to_save, json_file)
+            json.dump(dict_to_save, json_file, indent=4)
+
+        # TODO: zmienić numerację
 
 
 if __name__ == "__main__":
@@ -31,10 +33,12 @@ if __name__ == "__main__":
         3: {"text": "jakis tekst", "status": "encrypted"},
         4: {"text": "inny tekst", "status": "decrypted"},
     }
-
-    file_path = "C:/Users/smial/OneDrive/Pulpit/new.json"
+    file_path = "new.json"
+    # file_path = "C:/Users/smial/OneDrive/Pulpit/new.json"
+    # file_path2 = "C:/Users/smial/OneDrive/Pulpit/new2.json"
 
     filehandler = FileHandler()
     filehandler.save_to_file(file_path, my_dict)
 
     print(filehandler.read_from_file(file_path))
+    # filehandler.read_from_file(file_path2)
