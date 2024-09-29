@@ -31,3 +31,13 @@ class Menu:
         """Asks for a user input (string)."""
         text = str(input("Enter a text: "))
         return text
+
+    def get_file_path(self) -> str:
+        """Asks for a file path."""
+        file_path = str(input("Enter a file path: "))
+        return file_path
+
+    def show_processed_text(self, original_text: str, processed_text: str) -> None:
+        """Displays original and decoded/encoded text."""
+        print(f"Original text: {original_text}")
+        print(f"Processed text: {processed_text}")
