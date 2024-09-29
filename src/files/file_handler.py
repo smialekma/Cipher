@@ -18,8 +18,11 @@ class FileHandler:
 
         if os.path.exists(file_path):
             existing_dict = self.read_from_file(file_path)
-            for key, value in dict_to_save.items():
-                existing_dict[key] = value
+            num_of_keys = len(existing_dict.keys())
+            for count, (key, value) in enumerate(dict_to_save.items(), start=1):
+                number = num_of_keys + count
+                existing_dict[number] = value
+
             dict_to_save = existing_dict
 
         with open(file_path, "w") as json_file:
