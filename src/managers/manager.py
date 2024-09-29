@@ -15,11 +15,10 @@ class Manager:
         self.filehandler = FileHandler()
 
     def start(self):
-        print("Welcome to the Cipher project.")
         self.show_menu()
         options = {
             1: self.process_user_input,
-            2: self.read_from_file,
+            2: self.process_texts_from_file,
             3: self.save_to_file,
             4: self.exit,
         }
@@ -48,14 +47,14 @@ class Manager:
         dict_from_file = self.filehandler.read_from_file(file_path)
         self.buffer.dict_to_buffer(dict_from_file)
 
-    def transform(self, text: Text) -> str:
-        rot_options = {"rot13": Rot13Factory(), "rot47": Rot47Factory()}
-        rot_factory = rot_options.get(text.rot_type)
-        rot = rot_factory.create_decoder()
-        if text.status == "decoded":
-            return rot.encode(text.text)
-        if text.status == "encoded":
-            return rot.decode(text.text)
+    # def transform(self, text: Text) -> str:
+    # rot_options = {"rot13": Rot13Factory(), "rot47": Rot47Factory()}
+    # rot_factory = rot_options.get(text.rot_type)
+    # rot = rot_factory.create_decoder()
+    # if text.status == "decoded":
+    #   return rot.encode(text.text)
+    # if text.status == "encoded":
+    #   return rot.decode(text.text)
 
     def _get_status(self) -> str:
         """Asks user if they want to encode/decode a text and returns their choice
@@ -90,3 +89,28 @@ class Manager:
 
         text_obj = Text(text=processed_text, status=status, rot_type=rot_type)
         self.buffer.add_to_buffer(text_obj)
+
+        self.menu.get_back_or_exit()
+        options = {1: self.start, 2: self.exit}
+        self.execute(options)
+
+    def process_texts_from_file(self):
+        """Loads texts from a json file, asks user if they want to decode/encode
+        and to choose a cipher, then processes appropriate texts."""
+        self.read_from_file()
+        print("The text(s) has been loaded.")
+        status = self._get_status()
+        rot = self._get_rot()
+        for text in self.buffer.buffer:
+            if text.status != status:
+                status_options = {"encoded": rot.encode, "decoded": rot.decode}
+                processed_text = status_options.get(status)(text.text)
+                self.menu.show_processed_text(text.text, processed_text)
+                print()
+
+        self.menu.get_back_or_exit()
+        options = {1: self.start, 2: self.exit}
+        self.execute(options)
+
+    def exit(self):
+        exit()

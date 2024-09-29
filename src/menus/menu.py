@@ -41,3 +41,8 @@ class Menu:
         """Displays original and decoded/encoded text."""
         print(f"Original text: {original_text}")
         print(f"Processed text: {processed_text}")
+
+    def get_back_or_exit(self) -> None:
+        print("Do you want to:")
+        print("1 - Get back to the main menu?")
+        print("2 - Exit?")
