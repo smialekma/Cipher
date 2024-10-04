@@ -1,5 +1,8 @@
-class Menu:
+from typing import Union
+from menu_options import MenuOption
 
+
+class Menu:
     def main(self) -> None:
         """This method displays main menu options."""
         print("1 - Enter a text")
@@ -18,7 +21,7 @@ class Menu:
         print("1 - ROT13")
         print("2 - ROT47")
 
-    def get_number(self) -> int:
+    def get_number(self) -> Union["MenuOption", int]:
         """Asks for a user input (number)."""
         try:
             choice = int(input("Enter a number: "))

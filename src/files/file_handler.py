@@ -3,7 +3,6 @@ import os
 
 
 class FileHandler:
-
     def read_from_file(self, file_path: str) -> dict:
         """This function creates a dictionary from a json file"""
         try:
@@ -28,13 +27,11 @@ class FileHandler:
         with open(file_path, "w") as json_file:
             json.dump(dict_to_save, json_file, indent=4)
 
-        # TODO: zmienić numerację
-
 
 if __name__ == "__main__":
     my_dict = {
-        3: {"text": "jakis tekst", "status": "encrypted"},
-        4: {"text": "inny tekst", "status": "decrypted"},
+        3: {"text": "jakis tekst", "status": "encoded"},
+        4: {"text": "inny tekst", "status": "decoded"},
     }
     file_path = "new.json"
     # file_path = "C:/Users/smial/OneDrive/Pulpit/new.json"

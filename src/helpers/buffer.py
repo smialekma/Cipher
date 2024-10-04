@@ -1,4 +1,4 @@
-from src.decoders.text import Text
+from src.helpers.text import Text
 from dataclasses import asdict
 
 
