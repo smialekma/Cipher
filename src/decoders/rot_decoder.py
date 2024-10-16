@@ -6,23 +6,26 @@ import codecs
 class Decoder(ABC):
 
     @abstractmethod
-    def encode(self, text: str):
+    def encode(self, text: str) -> str:
         pass
 
     @abstractmethod
-    def decode(self, text: str):
+    def decode(self, text: str) -> str:
         pass
 
 
 class Rot13Decoder(Decoder):
 
+    def _transform(self, text) -> str:
+        return codecs.encode(text, "rot_13")
+
     def encode(self, text: str) -> str:
         """This function encodes [plain -> cipher] a text with a Caesar cipher."""
-        return codecs.encode(text, "rot_13")
+        return self._transform(text)
 
     def decode(self, text: str) -> str:
         """This function decodes [cipher -> plain] a text with a Caesar cipher."""
-        return self.encode(text)
+        return self._transform(text)
 
 
 class Rot47Decoder(Decoder):
