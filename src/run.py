@@ -8,7 +8,12 @@ def main():
     print("Welcome to the Cipher project.")
 
     manager = Manager(menu=Menu(), buffer=Buffer(), file_handler=FileHandler())
-    manager.start()
+
+    # while manager.start():
+    #     pass
+    # manager.start()
+    while manager.start():
+        pass
 
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
 from typing import Union
-from menu_options import MenuOption
+from src.menus.menu_options import MenuOption
 
 
 class Menu:

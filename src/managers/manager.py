@@ -1,3 +1,5 @@
+from json import JSONDecodeError
+
 from src.files.file_handler import FileHandler
 from src.menus.menu import Menu
 from src.helpers.text import Text
@@ -5,7 +7,9 @@ from src.helpers.text import Text
 from src.decoders.decoder_factory import DecoderFactory, Rot13Factory, Rot47Factory
 from src.helpers.buffer import Buffer
 from typing import Callable
-from src.menus.menu_options import MenuOption, TextStatus, CipherType
+from src.menus.menu_options import MenuOption
+from src.decoders.cipher_type import CipherType
+from src.helpers.text_status import TextStatus
 
 
 class Manager:
@@ -15,25 +19,27 @@ class Manager:
         self.buffer = buffer
         self.filehandler = file_handler
 
-    def start(self) -> None:
+    def start(self) -> bool:
         self.menu.main()
         options = {
-            MenuOption.PROCESS_USER_INPUT: self.process_user_input,
-            MenuOption.PROCESS_FROM_FILE: self.process_texts_from_file,
-            MenuOption.SAVE_TO_FILE: self.save_to_file,
-            MenuOption.EXIT: self._exit,
+            MenuOption.PROCESS_USER_INPUT.value: self.process_user_input,
+            MenuOption.PROCESS_FROM_FILE.value: self.process_texts_from_file,
+            MenuOption.SAVE_TO_FILE.value: self.save_to_file,
+            MenuOption.EXIT.value: self._exit,
         }
-        self.execute(options)
+        return self.execute(options)
 
-    def execute(self, options: dict[MenuOption | int, Callable]) -> Callable:
+    def execute(self, options: dict[MenuOption | int, Callable]) -> bool:
         """Asks user for a number and executes it."""
         number = self.menu.get_number()
         try:
             choice = options[number]()
-            return choice
-        except ValueError:
+            if choice is False:
+                return False
+            return True
+        except KeyError:
             print("You entered an incorrect number.")
-            self.execute(options)
+            return self.execute(options)
 
     def save_to_file(self):
         """saves all texts used in a program to a json file"""
@@ -49,8 +55,15 @@ class Manager:
     def read_from_file(self):
         """Asks user to enter file path, loads texts from a json file."""
         file_path = self.menu.get_file_path()
-        dict_from_file = self.filehandler.read_from_file(file_path)
-        self.buffer.dict_to_buffer(dict_from_file)
+        try:
+            dict_from_file = self.filehandler.read_from_file(file_path)
+            self.buffer.dict_to_buffer(dict_from_file)
+        except FileNotFoundError:
+            print("File not found. Please check the path and ensure the file exists.")
+            self.read_from_file()
+        except JSONDecodeError:
+            print("Invalid file. Please check the path and ensure the file is valid.")
+            self.read_from_file()
 
     def _get_status(self) -> TextStatus:
         """Asks user if they want to encode/decode a text and returns their choice
@@ -67,7 +80,7 @@ class Manager:
         options = {1: CipherType.ROT13, 2: CipherType.ROT47}
         return options.get(number)
 
-    def _get_decoder_factory(self, *, rot_type: CipherType) -> "DecoderFactory":
+    def _get_decoder_factory(self, rot_type: CipherType) -> "DecoderFactory":
         rot_options = {
             CipherType.ROT13: Rot13Factory(),
             CipherType.ROT47: Rot47Factory(),
@@ -81,7 +94,7 @@ class Manager:
         status = self._get_status()
         rot_type = self._get_rot()
 
-        decoder_factory = self._get_decoder_factory(rot_type=rot_type)
+        decoder_factory = self._get_decoder_factory(rot_type)
 
         decoder = decoder_factory.create_decoder()
 
@@ -98,7 +111,7 @@ class Manager:
 
         self.menu.get_back_or_exit()
         options = {1: self.start, 2: self._exit}
-        self.execute(options)
+        return self.execute(options)
 
     def process_texts_from_file(self):
         """Loads texts from a json file, asks user if they want to decode/encode
@@ -122,7 +135,7 @@ class Manager:
 
         self.menu.get_back_or_exit()
         options = {1: self.start, 2: self._exit}
-        self.execute(options)
+        return self.execute(options)
 
-    def _exit(self):
-        exit()
+    def _exit(self) -> bool:
+        return False
