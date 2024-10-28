@@ -22,12 +22,12 @@ this project is easily modifiable and extendable (for example, with different ki
 </ul>
 
 ## Setup
-1. Clone the repo
+1. Clone the repo:
 ```bash
 git clone https://github.com/smialekma/Cipher.git
 ```
 
-2. Create virtual environment (optional)
+2. Create virtual environment (optional):
 ```bash
 python -m venv .venv
 ```
