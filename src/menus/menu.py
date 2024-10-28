@@ -9,17 +9,20 @@ class Menu:
         print("2 - Load from a json file")
         print("3 - Save to a json file")
         print("4 - Exit")
+        print()
 
     def encode_or_decode(self) -> None:
         """This method asks a user to choose if they want to encode or decode a text"""
         print("1 - Encode")
         print("2 - Decode")
+        print()
 
     def choose_cipher(self) -> None:
         """This method shows a menu where you can choose a cipher."""
         print("Choose cipher:")
         print("1 - ROT13")
         print("2 - ROT47")
+        print()
 
     def get_number(self) -> Union["MenuOption", int]:
         """Asks for a user input (number)."""
@@ -28,7 +31,6 @@ class Menu:
             return choice
         except ValueError:
             print("Incorrect value!")
-            self.get_number()
 
     def get_text(self) -> str:
         """Asks for a user input (string)."""
@@ -44,8 +46,10 @@ class Menu:
         """Displays original and decoded/encoded text."""
         print(f"Original text: {original_text}")
         print(f"Processed text: {processed_text}")
+        print()
 
     def get_back_or_exit(self) -> None:
         print("Do you want to:")
         print("1 - Get back to the main menu?")
         print("2 - Exit?")
+        print()

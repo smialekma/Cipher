@@ -1,6 +1,6 @@
+import pytest
 from unittest.mock import patch, call
 from src.menus.menu import Menu
-import pytest
 
 
 class TestMenu:
@@ -32,9 +32,11 @@ class TestMenu:
             mock_print.assert_has_calls([call("1 - ROT13"), call("2 - ROT47")])
 
     @pytest.mark.test_get_number
-    def test_expect_value_error_when_incorrect_number_is_entered(self, menu):
-        # with patch('builtins.input', side_effect=['hej', '2']):
-        pass
+    def test_expect_error_message_when_string_is_entered(self, menu):
+        with patch("builtins.input", side_effect=["hej", "4"]):
+            with patch("builtins.print") as mock_print:
+                menu.get_number()
+                mock_print.assert_has_calls([call("Incorrect value!")])
 
     @pytest.mark.test_get_number
     def test_should_return_number_entered_into_input(self, menu):
@@ -55,8 +57,6 @@ class TestMenu:
     def test_get_file_path_should_return_correct_value_for_input(self, menu):
         with patch("builtins.input", return_value="C:/Users/User/cipher-files"):
             assert menu.get_file_path() == "C:/Users/User/cipher-files"
-
-    # file path - ukosniki???
 
     def test_should_correctly_display_original_and_processed_texts(self, menu):
         with patch("builtins.print") as mock_print:

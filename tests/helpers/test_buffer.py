@@ -26,7 +26,11 @@ class TestBuffer:
 
         assert buffer.buffer_to_dict() == returned_dict
 
-        # empty_buffer?
+    @pytest.mark.test_buffer_to_dict
+    def test_should_return_empty_dict_for_empty_buffer(self, buffer):
+        buffer.buffer.clear()
+
+        assert buffer.buffer_to_dict() == {}
 
     @pytest.mark.test_single_dict_to_text_object
     def test_should_return_correct_text_object_from_single_dict(self, buffer):

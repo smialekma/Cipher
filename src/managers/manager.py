@@ -1,4 +1,5 @@
 from json import JSONDecodeError
+from typing import Callable
 
 from src.files.file_handler import FileHandler
 from src.menus.menu import Menu
@@ -6,7 +7,6 @@ from src.helpers.text import Text
 
 from src.decoders.decoder_factory import DecoderFactory, Rot13Factory, Rot47Factory
 from src.helpers.buffer import Buffer
-from typing import Callable
 from src.menus.menu_options import MenuOption
 from src.decoders.cipher_type import CipherType
 from src.helpers.text_status import TextStatus
@@ -31,15 +31,17 @@ class Manager:
 
     def execute(self, options: dict[MenuOption | int, Callable]) -> bool:
         """Asks user for a number and executes it."""
-        number = self.menu.get_number()
         try:
+            number = self.menu.get_number()
             choice = options[number]()
             if choice is False:
                 return False
             return True
         except KeyError:
             print("You entered an incorrect number.")
-            return self.execute(options)
+            return self.start()
+        except ValueError:
+            self.start()
 
     def save_to_file(self):
         """saves all texts used in a program to a json file"""
@@ -49,8 +51,7 @@ class Manager:
             self.filehandler.save_to_file(file_path, dict_to_save)
             print("The texts have been saved.")
         except IOError:
-            print("No such directory!")
-            self.save_to_file()
+            self.start()
 
     def read_from_file(self):
         """Asks user to enter file path, loads texts from a json file."""
@@ -59,35 +60,42 @@ class Manager:
             dict_from_file = self.filehandler.read_from_file(file_path)
             self.buffer.dict_to_buffer(dict_from_file)
         except FileNotFoundError:
-            print("File not found. Please check the path and ensure the file exists.")
-            self.read_from_file()
+            self.start()
         except JSONDecodeError:
-            print("Invalid file. Please check the path and ensure the file is valid.")
-            self.read_from_file()
+            self.start()
 
-    def _get_status(self) -> TextStatus:
+    def _get_status(self) -> TextStatus | bool:
         """Asks user if they want to encode/decode a text and returns their choice
         in the form of a dataclass attribute ('decoded/encoded')."""
         self.menu.encode_or_decode()
-        number = self.menu.get_number()
-        options = {1: TextStatus.ENCODED, 2: TextStatus.DECODED}
-        return options.get(number)
+        try:
+            number = self.menu.get_number()
+            options = {1: TextStatus.ENCODED.value, 2: TextStatus.DECODED.value}
+            return options[number]
+        except KeyError:
+            print("You entered an incorrect number.")
+            return self.start()
 
-    def _get_rot(self) -> CipherType:
+    def _get_rot(self) -> CipherType | bool:
         """Asks user what cipher they want to use and returns their choice."""
         self.menu.choose_cipher()
-        number = self.menu.get_number()
-        options = {1: CipherType.ROT13, 2: CipherType.ROT47}
-        return options.get(number)
+        try:
+            number = self.menu.get_number()
+            options = {1: CipherType.ROT13.value, 2: CipherType.ROT47.value}
+            return options.get(number)
+        except KeyError:
+            print("You entered an incorrect number.")
+            return self.start()
 
     def _get_decoder_factory(self, rot_type: CipherType) -> "DecoderFactory":
+        """Returns a specific decoder factory based on a CipherType value."""
         rot_options = {
-            CipherType.ROT13: Rot13Factory(),
-            CipherType.ROT47: Rot47Factory(),
+            CipherType.ROT13.value: Rot13Factory(),
+            CipherType.ROT47.value: Rot47Factory(),
         }
         return rot_options.get(rot_type)
 
-    def process_user_input(self):
+    def process_user_input(self) -> bool:
         """asks user to type a text, choose the cypher type
         and if they want to decode or encode. Then shows the decoded/encoded text."""
         text = self.menu.get_text()
@@ -99,8 +107,8 @@ class Manager:
         decoder = decoder_factory.create_decoder()
 
         status_options = {
-            TextStatus.ENCODED: decoder.encode,
-            TextStatus.DECODED: decoder.decode,
+            TextStatus.ENCODED.value: decoder.encode,
+            TextStatus.DECODED.value: decoder.decode,
         }
         processed_text = status_options.get(status)(text)
 
@@ -113,7 +121,7 @@ class Manager:
         options = {1: self.start, 2: self._exit}
         return self.execute(options)
 
-    def process_texts_from_file(self):
+    def process_texts_from_file(self) -> bool:
         """Loads texts from a json file, asks user if they want to decode/encode
         and to choose a cipher, then processes appropriate texts."""
         self.read_from_file()
@@ -126,12 +134,11 @@ class Manager:
         for text in self.buffer.buffer:
             if text.status != status:
                 status_options = {
-                    TextStatus.ENCODED: decoder.encode,
-                    TextStatus.DECODED: decoder.decode,
+                    TextStatus.ENCODED.value: decoder.encode,
+                    TextStatus.DECODED.value: decoder.decode,
                 }
                 processed_text = status_options.get(status)(text.text)
                 self.menu.show_processed_text(text.text, processed_text)
-                print()
 
         self.menu.get_back_or_exit()
         options = {1: self.start, 2: self._exit}

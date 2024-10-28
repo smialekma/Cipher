@@ -1,5 +1,5 @@
-from src.helpers.text import Text
 from dataclasses import asdict
+from src.helpers.text import Text
 
 
 class Buffer:
