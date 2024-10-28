@@ -4,6 +4,7 @@
 * [Setup](#setup)
 * [More detailed information about modules](#more-detailed-information-about-modules)
 * [Application view](#application-view)
+* [Source](#source)
 
 ## General info
 This project is a simple command-line app allowing for text encryption and decryption using ROT13 and ROT47 ciphers (Ceasar cipher) with extra file handling functionality.
@@ -49,3 +50,7 @@ User-friendly interface for selecting functions.
 </details> 
 
 ## Application view
+<img src=”https://github.com/user-attachments/assets/25af4b82-77a3-45b6-acd5-00a132529fa1” width=”50%” height=”50%”></img>
+
+## Source
+This app is inspired by Devs-Mentoring.pl
