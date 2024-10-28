@@ -70,7 +70,7 @@ class TestManager:
 
         options = {1: return_hi, 2: return_hello}
 
-        with patch("builtins.input", side_effect=["3", "2"]):
+        with patch("builtins.input", side_effect=["3", "4"]):
             with patch("builtins.print") as mock_print:
                 manager.execute(options)
                 mock_print.assert_has_calls([call("You entered an incorrect number.")])

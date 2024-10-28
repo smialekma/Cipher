@@ -64,6 +64,3 @@ User-friendly interface for selecting functions.
 
 ## Application view
 <img src="https://github.com/user-attachments/assets/25af4b82-77a3-45b6-acd5-00a132529fa1" width=”50%” height=”50%”></img>
-
-## Source
-This app is inspired by Devs-Mentoring.pl

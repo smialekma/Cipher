@@ -30,7 +30,7 @@ class TestFileHandler:
             file.write("")
 
         with patch("builtins.print") as mock_print:
-            handler.read_from_file(self.FILE_PATH)
+            handler.read_from_file(self.FILE_PATH_TXT)
             mock_print.assert_called_with(
                 "Invalid file. Please check the path and ensure the file is valid."
             )
