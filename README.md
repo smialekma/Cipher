@@ -11,21 +11,34 @@ This project is a simple command-line app allowing for text encryption and decry
 The texts might be decoded/encoded both directly from json file and from user input - and bulk-saved to another (or the same) json file.
 Thanks to implementing the best coding practices and design patterns (Facade/Factory) this project is easily modifiable and extendable (for example, with different kinds of ciphers).
 
-## Technologies
+## Technologies & Tools
 <ul>
-<li>Python</li>
-<li>JSON</li>
+<li>Python 3.12</li>
+<li>Pytest</li>
+<li>Pre-commit</li>
+<li>Github Actions</li>
 </ul>
 
 ## Setup
 1. Clone the repo
-```git clone https://github.com/smialekma/Cipher.git```
+```bash
+git clone https://github.com/smialekma/Cipher.git
+```
 
-2. Install the required dependencies:
-```pip install -r requirements.txt```
+2. Create virtual environment (optional)
+```bash
+python -m venv .venv
+```
 
-3. To start the program, run the following command:
-```python run.py```
+3. Install the required dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+4. To start the program, run the following command:
+```bash
+python run.py
+```
 
 ## More detailed information about modules
 <details>
@@ -38,7 +51,7 @@ JSON-based file operations (reading, writing and appending) with user-defined fi
 </details>
 <details>
 <summary><b>Buffer</b></summary>
-Logger that holds all the texts used during the program operation. Allows for efficient loading from and saving to files.
+Memory object that holds all the texts used during the program operation. Allows for efficient loading from and saving to files.
 </details>
 <details>
 <summary><b>Manager</b></summary>
@@ -50,7 +63,7 @@ User-friendly interface for selecting functions.
 </details> 
 
 ## Application view
-<img src=”https://github.com/user-attachments/assets/25af4b82-77a3-45b6-acd5-00a132529fa1” width=”50%” height=”50%”></img>
+<img src="https://github.com/user-attachments/assets/25af4b82-77a3-45b6-acd5-00a132529fa1" width=”50%” height=”50%”></img>
 
 ## Source
 This app is inspired by Devs-Mentoring.pl
