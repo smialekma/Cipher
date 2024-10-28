@@ -1,5 +1,5 @@
-from rot_decoder import Rot13Decoder, Rot47Decoder
 from abc import ABC, abstractmethod
+from src.decoders.rot_decoder import Rot13Decoder, Rot47Decoder
 
 
 class DecoderFactory(ABC):

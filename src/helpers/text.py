@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-from src.menus.menu_options import CipherType, TextStatus
+from src.decoders.cipher_type import CipherType
+from src.helpers.text_status import TextStatus
 
 
 @dataclass
