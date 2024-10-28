@@ -150,9 +150,6 @@ class TestManager:
         with patch("builtins.input", return_value="2"):
             assert manager._get_rot() == CipherType.ROT47.value
 
-    # def test_expect_exception_when_number_out_of_range():
-    # pass
-
     @pytest.mark.test_get_decoder_factory
     def test_should_return_correct_decoder_factory(self, manager):
         rot_type = CipherType.ROT13.value
